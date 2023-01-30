@@ -15,7 +15,7 @@ npm install -g http-server
 cd directory/
 http-server
 ```
-3. Access the game through your web browser at: http://localhost:8080.
+3. Access the game through your web browser at: `http://localhost:8080`.
 
 ## Controls
 - Use the arrow keys to move the spaceship left and right.
@@ -24,7 +24,7 @@ http-server
 ## Examples
 The following website used the open-source code to build a custom space invaders:
 
-- [Ahmadai Sapce Invaders](https://ahmadai.com/space/){:target="_blank"}
+- [Ahmadai Sapce Invaders](https://ahmadai.com/space/)
 
 You can add your own game link to this section if you have used this code in your project.
 
