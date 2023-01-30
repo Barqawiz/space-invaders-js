@@ -1,5 +1,0 @@
-run using the following script in terminal:
-http-server
-
-Installed using the following command:
- npm install -g http-server

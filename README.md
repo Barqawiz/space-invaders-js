@@ -1,30 +1,30 @@
 # space-invaders
 Space Invaders is a classic arcade game where the player controls a spaceship and shoots down enemy aliens. This game is developed using the p5.js library and is open source.
 
-<img src="assets/screenshot.png" height="200px">
+<img src="assets/screenshot.png" height="280px">
 
 ## Installation
 Use http-server or any other server to run the javascript game.
 
-1. Use npm to install the server
+1. Use npm to install the server.
 ```
 npm install -g http-server
 ```
-2. Run the server
+2. Run the server.
 ```
 cd directory/
 http-server
 ```
-3. Access the game through your web browser at http://localhost:8080
+3. Access the game through your web browser at: http://localhost:8080.
 
 ## Controls
 - Use the arrow keys to move the spaceship left and right.
 - Press the spacebar to shoot.
 
 ## Examples
-The following website used the open-source code to build a custom space invaders.
+The following website used the open-source code to build a custom space invaders:
 
-- [Ahmadai Sapce Invaders](https://ahmadai.com/space/)
+- [Ahmadai Sapce Invaders](https://ahmadai.com/space/){:target="_blank"}
 
 You can add your own game link to this section if you have used this code in your project.
 
