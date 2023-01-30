@@ -18,8 +18,8 @@ http-server
 3. Access the game through your web browser at http://localhost:8080
 
 ## Controls
-- Use the arrow keys to move the spaceship left and right
-- Press the spacebar to shoot
+- Use the arrow keys to move the spaceship left and right.
+- Press the spacebar to shoot.
 
 ## Examples
 The following website used the open-source code to build a custom space invaders.
