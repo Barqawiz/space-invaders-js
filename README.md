@@ -1,5 +1,5 @@
 # space-invaders
-Space Invaders is a classic arcade game where the player controls a spaceship and shoots down enemy aliens. This game is developed using the p5.js library and is open source.
+Space Invaders is a classic arcade game where the player controls a spaceship and shoots down enemy aliens. This simple game is developed using the p5.js library and is open source.
 
 <img src="assets/screenshot.png" height="280px">
 
