@@ -13,157 +13,170 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-let player;
-let enemies = [];
-let playerProjectiles = [];
-let enemyProjectiles = [];
-let gameOver = false;
-let gameWin = false;
-let score = 0;
-let retryButton;
-let retryButtonVisible = false;
-// images
-let spaceImg;
-let enemyImg;
-// counter
-let killedEnemies = 0;
-// star variables
-let starX = [];
-let starY = [];
-let starSpeed = [];
+let game;
 
 function preload() {
-  spaceImg = loadImage("./assets/spaceship.png");
-  enemyImg = loadImage("./assets/alien1.png");
-
+    game = new Game();
+    game.spaceImg = loadImage("./assets/spaceship.png");
+    game.enemyImg = loadImage("./assets/alien1.png");
 }
 
 function setup() {
-  createCanvas(800, 600);
-  translate(width / 2, height / 2);
-  retryButton = createButton("Retry");
-  retryButton.position(width/2-20, height/2+80);
-  retryButton.mousePressed(resetGame);
-  resetGame();
+    createCanvas(800, 600);
+    translate(width / 2, height / 2);
+    game.setup();
+
 }
 
-function resetGame() {
-  killedEnemies = 0
-  gameOver = false;
-  gameWin = false;
-  score = 0;
-  retryButtonVisible = false;
-  retryButton.hide();
-  player = new Player();
-  enemies = [];
-  initEnemies();
-  playerProjectiles = [];
-  enemyProjectiles = [];
-  // stars reset
-  let starX = [];
-  let starY = [];
-  let starSpeed = [];
-}
-
-function initEnemies() {
-  for (let i = 0; i < 5; i++) {
-    for (let j = 0; j < 10; j++) {
-      enemies.push(new Enemy(j * 60 + 60, i * 40 + 80));
-    }
-  }
-}
 
 function draw() {
-  background(0);
-  strokeWeight(1);
+    background(0);
+    strokeWeight(1);
 
-  if (gameOver) {
-    textAlign(CENTER);
-    fill(255);
-    textSize(32);
-    if (gameWin)
-      text("Winner", width / 2, height / 2);
-    else
-      text("Game Over", width / 2, height / 2);
-    text("Score: " + score, width / 2, height / 2 + 40);
-    if (!retryButtonVisible) {
-      retryButton.show();
-      retryButtonVisible = true;
+    if (game.gameOver) {
+        textAlign(CENTER);
+        fill(255);
+        textSize(32);
+        if (game.gameWin)
+            text("Winner", width / 2, height / 2);
+        else
+            text("Game Over", width / 2, height / 2);
+        text("Score: " + game.score, width / 2, height / 2 + 40);
+        if (!game.retryButtonVisible) {
+            game.retryButton.show();
+            game.retryButtonVisible = true;
+        }
+        return;
     }
-    return;
-  }
 
-  player.show();
-  player.move();
+    game.player.show();
+    game.player.move();
 
-  for (let i = 0; i < enemies.length; i++) {
-    enemies[i].show();
-    enemies[i].move();
-  }
-
-  for (let i = 0; i < playerProjectiles.length; i++) {
-    playerProjectiles[i].show();
-    playerProjectiles[i].move();
-    for (let j = 0; j < enemies.length; j++) {
-      if (playerProjectiles[i].hit(enemies[j])) {
-        killedEnemies++;
-        score++;
-        enemies.splice(j, 1);
-        playerProjectiles.splice(i, 1);
-        i--;
-        break;
-      }
+    for (let i = 0; i < game.enemies.length; i++) {
+        game.enemies[i].show();
+        game.enemies[i].move();
     }
-  }
 
-  for (let i = 0; i < enemyProjectiles.length; i++) {
-    enemyProjectiles[i].show();
-    enemyProjectiles[i].move();
-    if (enemyProjectiles[i].hit(player)) {
-      gameOver = true;
-    }
-  }
-
-  if (enemies.length === 0) {
-    gameOver = true;
-    gameWin = true;
-  }
-  updateKilledText();
-  drawStars();
-}
-
-function drawStars() {
-    for (var i = 0; i < 50; i++) {
-        stroke(255);
-        strokeWeight(random(1, 4));
-        if (!starX[i]) {
-            starX[i] = random(width);
-            starY[i] = random(height);
-            starSpeed[i] = random(1, 2);
-        } else {
-            starY[i] -= starSpeed[i];
-            if (starY[i] < 0) {
-                starX[i] = random(width);
-                starY[i] = height;
+    for (let i = 0; i < game.playerProjectiles.length; i++) {
+        game.playerProjectiles[i].show();
+        game.playerProjectiles[i].move();
+        for (let j = 0; j < game.enemies.length; j++) {
+            if (game.playerProjectiles[i].hit(game.enemies[j])) {
+                game.killedEnemies++;
+                game.score++;
+                game.enemies.splice(j, 1);
+                game.playerProjectiles.splice(i, 1);
+                i--;
+                break;
             }
         }
-        point(starX[i], starY[i]);
     }
-}
 
-function updateKilledText() {
-  textAlign(CENTER);
-  strokeWeight(0.5);
-  fill(255);
-  textSize(12);
-  text("Killed Enemies: " + killedEnemies, 80, 30);
+    for (let i = 0; i < game.enemyProjectiles.length; i++) {
+        game.enemyProjectiles[i].show();
+        game.enemyProjectiles[i].move();
+        if (game.enemyProjectiles[i].hit(game.player)) {
+            game.gameOver = true;
+        }
+    }
+
+    if (game.enemies.length === 0) {
+        game.gameOver = true;
+        game.gameWin = true;
+    }
+    game.updateKilledText();
+    game.drawStars();
 }
 
 function keyPressed() {
-  if (key === " ") {
-    playerProjectiles.push(new Projectile(player.x, player.y,-1));
-  }
+    if (key === " ") {
+        game.playerProjectiles.push(new Projectile(game.player.x, game.player.y, -1));
+    }
+}
+
+class Game {
+    constructor() {
+        this.player;
+        this.enemies = [];
+        this.playerProjectiles = [];
+        this.enemyProjectiles = [];
+        this.gameOver = false;
+        this.gameWin = false;
+        this.score = 0;
+        this.retryButton = createButton("Retry");
+        this.retryButtonVisible = false;
+        // images
+        this.spaceImg;
+        this.enemyImg;
+        // counter
+        this.killedEnemies = 0;
+        // star variables
+        this.starX = [];
+        this.starY = [];
+        this.starSpeed = [];
+    }
+
+    setup() {
+      this.retryButton.position(width / 2 - 20, height / 2 + 80);
+      this.retryButton.mousePressed(() => { this.resetGame() });
+      this.resetGame();
+    }
+
+    resetGame() {
+        this.killedEnemies = 0
+        this.gameOver = false;
+        this.gameWin = false;
+        this.score = 0;
+        this.retryButtonVisible = false;
+        this.retryButton.hide();
+        this.player = new Player();
+        this.enemies = [];
+        this.initEnemies();
+        this.playerProjectiles = [];
+        this.enemyProjectiles = [];
+        // stars reset
+        this.starX = [];
+        this.starY = [];
+        this.starSpeed = [];
+    }
+
+    initEnemies() {
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 10; j++) {
+                this.enemies.push(new Enemy(j * 60 + 60, i * 40 + 80));
+            }
+        }
+    }
+
+
+    drawStars() {
+        for (var i = 0; i < 50; i++) {
+            stroke(255);
+            strokeWeight(random(1, 4));
+            if (!this.starX[i]) {
+                this.starX[i] = random(width);
+                this.starY[i] = random(height);
+                this.starSpeed[i] = random(1, 2);
+            } else {
+                this.starY[i] -= this.starSpeed[i];
+                if (this.starY[i] < 0) {
+                    this.starX[i] = random(width);
+                    this.starY[i] = height;
+                }
+            }
+            point(this.starX[i], this.starY[i]);
+        }
+    }
+
+    updateKilledText() {
+        textAlign(CENTER);
+        strokeWeight(0.5);
+        fill(255);
+        textSize(12);
+        text("Killed Enemies: " + this.killedEnemies, 80, 30);
+    }
+
+
 }
 
 class Player {
@@ -175,7 +188,7 @@ class Player {
   }
 
   show() {
-    image(spaceImg, this.x, this.y, this.w, this.h);
+    image(game.spaceImg, this.x, this.y, this.w, this.h);
   }
 
   move() {
@@ -199,7 +212,7 @@ class Enemy {
   }
 
   show() {
-    image(enemyImg, this.x, this.y, this.w, this.h);
+    image(game.enemyImg, this.x, this.y, this.w, this.h);
     //rect(this.x, this.y, this.w, this.h);
   }
 
@@ -210,7 +223,7 @@ class Enemy {
       this.y += 10;
     }
     if (random(1) < 0.001) {
-      enemyProjectiles.push(new Projectile(this.x + this.w / 2, this.y + this.h, 1));
+      game.enemyProjectiles.push(new Projectile(this.x + this.w / 2, this.y + this.h, 1));
     }
   }
 }
