@@ -24,7 +24,7 @@ http-server
 ## Examples
 The following website used the open-source code to build a custom space invaders:
 
-- [Ahmadai Sapce Invaders](https://ahmadai.com/space/)
+- [Ahmadai Sapce Invaders](https://ahmadai.com/games/space/)
 
 You can add your own game link to this section if you have used this code in your project.
 
